@@ -24,17 +24,18 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> fetchProducts() async {
     QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection("sanpham").get();
-    
-    List<Product> loadedProducts = snapshot.docs.map((doc) {
-      return Product(
-        documentId: doc.id,
-        idsp: doc["idsp"],
-        ten: doc["ten"],
-        loaisp: doc["loaisp"],
-        gia: doc["gia"],
-        hinhanh: doc["hinhanh"],
-      );
-    }).toList();
+
+    List<Product> loadedProducts =
+        snapshot.docs.map((doc) {
+          return Product(
+            documentId: doc.id,
+            idsp: doc["idsp"],
+            ten: doc["ten"],
+            loaisp: doc["loaisp"],
+            gia: doc["gia"],
+            hinhanh: doc["hinhanh"],
+          );
+        }).toList();
 
     setState(() {
       products = loadedProducts;
@@ -44,43 +45,49 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void searchProducts(String query) {
     setState(() {
-      filteredProducts = products.where((product) {
-        final nameMatch = product.ten.toLowerCase().contains(query.toLowerCase());
-        final categoryMatch = product.loaisp.toLowerCase().contains(query.toLowerCase());
-        final priceMatch = product.gia.toString().contains(query); // Convert price to string for search
-        
-        return nameMatch || categoryMatch || priceMatch;
-      }).toList();
+      filteredProducts =
+          products.where((product) {
+            final nameMatch = product.ten.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+            final categoryMatch = product.loaisp.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+            final priceMatch = product.gia.toString().contains(
+              query,
+            ); // Convert price to string for search
+
+            return nameMatch || categoryMatch || priceMatch;
+          }).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text("Search Products"),
+      navigationBar: CupertinoNavigationBar(middle: Text("Search Products")),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CupertinoSearchTextField(
+                controller: searchController,
+                onChanged: searchProducts,
+                placeholder: "Search by name, category, or price",
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredProducts.length,
+                itemBuilder: (context, index) {
+                  return ProductItem(product: filteredProducts[index]);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-      child: SafeArea(child:  
-       Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: CupertinoSearchTextField(
-              controller: searchController,
-              onChanged: searchProducts,
-              placeholder: "Search by name, category, or price",
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                return ProductItem(product: filteredProducts[index]);
-              },
-            ),
-          ),
-        ],
-      ),)
     );
   }
 }

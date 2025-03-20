@@ -8,9 +8,7 @@ import 'package:mid_term/ui/login/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MainApp());
 }
 
@@ -21,16 +19,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Mid Term App',
-      theme: const CupertinoThemeData(
-      primaryColor: CupertinoColors.activeBlue,
+      theme: const CupertinoThemeData(primaryColor: CupertinoColors.activeBlue),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LoginScreen();
+          }
+          return MainScreen();
+        },
       ),
-      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (context, snapshot){
-        if(!snapshot.hasData) {
-          return LoginScreen();
-        }
-        return MainScreen();
-      })
-      ,
       debugShowCheckedModeBanner: false,
     );
   }

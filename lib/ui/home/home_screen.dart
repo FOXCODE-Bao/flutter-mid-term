@@ -74,14 +74,17 @@ class HomeScreen extends StatelessWidget {
             return Center(child: Text("No products found"));
           }
 
-          var products = snapshot.data!.docs.map((doc) => Product.fromFirestore(doc.data(), doc.id)).toList();
+          var products =
+              snapshot.data!.docs
+                  .map((doc) => Product.fromFirestore(doc.data(), doc.id))
+                  .toList();
 
           return SafeArea(
             child: ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
                 var product = products[index];
-                return ProductItem(product: product,);
+                return ProductItem(product: product);
               },
             ),
           );

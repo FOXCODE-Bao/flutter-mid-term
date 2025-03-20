@@ -45,10 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text(
-                "${user!.email}",
-                style: TextStyle(fontSize: 18),
-              ),
+              Text("${user!.email}", style: TextStyle(fontSize: 18)),
             ],
           ),
         ),

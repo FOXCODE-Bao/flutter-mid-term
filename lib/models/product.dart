@@ -30,7 +30,7 @@ class Product {
   Map<String, dynamic> toFirestore() {
     return {
       "idsp": idsp,
-       "ten":ten,
+      "ten": ten,
       "loaisp": loaisp,
       "gia": gia,
       "hinhanh": hinhanh,
