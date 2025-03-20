@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mid_term/ui/home/home_screen.dart';
 import 'package:mid_term/utils/logger.dart';

@@ -27,7 +27,6 @@ class _EditScreenState extends State<EditScreen> {
     );
     if (selectedImage != null) {
       setState(() {
-        // logError(_image!.path);
         _image = selectedImage;
       });
     }
@@ -76,20 +75,18 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (widget.updatingProduct != null) {
       _nameController.text = widget.updatingProduct!.ten;
       _typeController.text = widget.updatingProduct!.loaisp;
       _priceController.text = widget.updatingProduct!.gia.toString();
-
-      File imageFile = File(widget.updatingProduct!.hinhanh);
-      imageFile.exists().then((exists) {
-        if (exists) {
-          _image = XFile(widget.updatingProduct!.hinhanh);
-        }
-      });
+      _image = XFile(widget.updatingProduct!.hinhanh);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text(widget.updatingProduct == null ? 'Add' : 'Update'),
